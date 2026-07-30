@@ -215,3 +215,26 @@
   document.addEventListener('scroll', navmenuScrollspy);
 
 })();
+
+(function(){
+  const back=document.getElementById('pmodalBack'); if(!back) return;
+  function open(card){
+    document.getElementById('pmodalImg').src=card.querySelector('img').src;
+    document.getElementById('pmodalTitle').textContent=card.dataset.title;
+    document.getElementById('pmodalDesc').textContent=card.dataset.desc;
+    document.getElementById('pmodalChips').innerHTML=card.querySelector('.pcard-chips').innerHTML;
+    const l=[];
+    if(card.dataset.live) l.push('<a class="primary" href="'+card.dataset.live+'" target="_blank" rel="noopener"><i class="bi bi-box-arrow-up-right"></i> Ver live</a>');
+    if(card.dataset.code) l.push('<a class="secondary" href="'+card.dataset.code+'" target="_blank" rel="noopener"><i class="bi bi-github"></i> Ver código</a>');
+    document.getElementById('pmodalLinks').innerHTML=l.join('');
+    back.classList.add('open');
+  }
+  function close(){back.classList.remove('open')}
+  document.querySelectorAll('.pcard').forEach(c=>{
+    c.addEventListener('click',()=>open(c));
+    c.addEventListener('keydown',e=>{if(e.key==='Enter')open(c)});
+  });
+  document.getElementById('pmodalClose').addEventListener('click',close);
+  back.addEventListener('click',e=>{if(e.target===back)close()});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});
+})();
